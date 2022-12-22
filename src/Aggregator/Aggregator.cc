@@ -38,32 +38,38 @@ void add(std::vector<DataType> const &vec, uint64_t start, uint64_t stop)
     for (uint64_t i = start; i < stop; i++)
     {
         progressBarStartIndex++;
-        bar.set_progress(((double)progressBarStartIndex / (double)progressBarEndIndex) * 100);
-        std::cout << "\x1B[2J\x1B[H";
-        bar.tick();
+        // std::cout << "\x1B[2J\x1B[H";
         atomicAddition += vec[i];
+        if (!bar.is_completed())
+        {
+            bar.set_progress(((double)progressBarStartIndex / (double)progressBarEndIndex) * 100);
+            bar.tick();
+        }
     }
 }
 
 class Aggregator
 {
 public:
+    Aggregator()
+    {
+        atomicAddition = (uint64_t)0;
+    }
+
     template <class DataType>
     uint64_t multithreadAtomicAddition(std::vector<DataType> const &vec)
     {
         auto const t1 = Clock::now();
 
-
-
-        std::thread thread1(add<DataType>, vec, 0, vec.size() / 4);
-        std::thread thread2(add<DataType>, vec, vec.size() / 4, vec.size() / 2);
-        std::thread thread3(add<DataType>, vec, vec.size() / 2, 3 * vec.size() / 4);
-        std::thread thread4(add<DataType>, vec, 3 * vec.size() / 4, vec.size());
+        std::thread thread1(add<DataType>, vec, 0, vec.size());
+        // std::thread thread2(add<DataType>, vec, vec.size() / 4, vec.size() / 2);
+        // std::thread thread3(add<DataType>, vec, vec.size() / 2, 3 * vec.size() / 4);
+        // std::thread thread4(add<DataType>, vec, 3 * vec.size() / 4, vec.size());
 
         thread1.join();
-        thread2.join();
-        thread3.join();
-        thread4.join();
+        // thread2.join();
+        // thread3.join();
+        // thread4.join();
         auto total = atomicAddition.load();
 
         std::cout << "Sum of " << vec.size() << " elements: " << total << std::endl;
