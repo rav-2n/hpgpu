@@ -1,6 +1,7 @@
 #include <random>
 #include <iostream>
 #include <array>
+#include <vector>
 
 #include <indicators/cursor_control.hpp>
 #include <indicators/progress_bar.hpp>
@@ -9,7 +10,7 @@ class DataGenerator
 {
 public:
     template <class DataType>
-    std::vector<DataType> generatePseudoRandomNumbers(uint64_t const limit)
+    std::vector<DataType> generatePseudoRandomNumbers(DataType const limit)
     {
         int const seed = 100;
         std::default_random_engine randomEngine(seed);
@@ -36,7 +37,6 @@ public:
 
         std::vector<DataType> array;
         array.reserve(limit);
-        auto progress = 0.0f;
         for (int i = 0; i < limit; i++)
         {
             bar.set_progress(((double)i / (double)limit) * 100);
@@ -55,11 +55,3 @@ public:
         return array;
     }
 };
-
-int main()
-{
-    DataGenerator dataGen;
-    uint64_t limit = 30e4;
-    dataGen.generatePseudoRandomNumbers<uint64_t>(limit);
-    return 0;
-}

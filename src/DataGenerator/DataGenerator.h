@@ -1,4 +1,7 @@
+#include <random>
 #include <iostream>
+#include <array>
+#include <vector>
 
 class DataGenerator
 {
