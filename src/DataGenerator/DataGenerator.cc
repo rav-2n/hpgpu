@@ -8,6 +8,12 @@
 class DataGenerator
 {
 public:
+    /**
+     * Generates seeded, recreatable, ascending pseudo-random numbers in a vector of size limit
+     * @param limit
+     * @returns std::vector<DataType>
+     * 
+    */
     template <class DataType>
     std::vector<DataType> generatePseudoRandomNumbers(uint64_t const limit)
     {
