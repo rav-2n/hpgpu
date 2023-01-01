@@ -11,6 +11,7 @@
 #ifndef CUDA_DISABLE_ERROR_CHECKING
 #define CHECK_CUDA(ans) check_cuda((ans), "", #ans, __FILE__, __LINE__)
 #define CHECK_LAST(msg) check_cuda(cudaGetLastError(), msg, "CHECK_LAST", __FILE__, __LINE__)
+#define CUDA_CHECK_KERNEL {cudaError_t error = cudaGetLastError(); if(error!=cudaSuccess){printf("<%s>:%i ",__FILE__,__LINE__); printf("[CUDA] Error: %s\n", cudaGetErrorString(error));}}
 #else
 #define CHECK_CUDA(ans) {}
 #define CHECK_LAST(msg) {}
