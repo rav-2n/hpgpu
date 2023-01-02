@@ -93,14 +93,14 @@ __global__ void callKernel(int limit, uint64_t *vec)
     dataGeneratorWithCuda.dataGen(limit, vec);
 }
 
-int main()
-{
-    int const NBlock = 26;
-    int const NThread = 1024;
+// int main()
+// {
+//     int const NBlock = 26;
+//     int const NThread = 1024;
 
-    uint64_t const limit = 1e8;
-    uint64_t vec_h[limit];
+//     uint64_t const limit = 1e8;
+//     uint64_t vec_h[limit];
 
-    DataGeneratorWithCuda::gen<NBlock, NThread>(limit, vec_h);
-    return 0;
-}
+//     DataGeneratorWithCuda::gen<NBlock, NThread>(limit, vec_h);
+//     return 0;
+// }

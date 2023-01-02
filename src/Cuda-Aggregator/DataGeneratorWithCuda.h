@@ -1,7 +1,8 @@
-#include <cuda.h> 
-
 class DataGeneratorWithCuda
 {
 public:
-    __device__ void dataGen(uint64_t const limit, std::vector<uint64_t>* );
+    void dataGen(uint64_t const, uint64_t*);
+
+    template <int NBlock, int NThread>
+    static void gen(uint64_t, uint64_t*);
 };
