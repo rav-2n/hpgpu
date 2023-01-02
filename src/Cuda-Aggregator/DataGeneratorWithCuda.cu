@@ -18,7 +18,7 @@ __global__ void callKernel(int, uint64_t *);
 class DataGeneratorWithCuda
 {
 public:
-    __device__ void dataGen(uint64_t const limit, uint64_t *vec)
+    __device__ void dataGen(uint64_t const limit, uint64_t* vec)
     {
         winsize w;
         // ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
@@ -38,11 +38,10 @@ public:
     }
 
     template <int NBlock, int NThread>
-    void gen(uint64_t const limit)
+    static void gen(uint64_t const limit, uint64_t* vec_h)
     {
         // int NBlock = 1;
         // int NThread = 128;
-        uint64_t vec_h[limit];
         uint64_t *vec_d;
         // time measurement
         cudaEvent_t cstart, cend;
@@ -55,7 +54,7 @@ public:
 
         CHECK_CUDA(cudaEventRecord(cstart));
 
-        // callKernel<<<NBlock, NThread>>>(limit, vec_d);
+        callKernel<<<NBlock, NThread>>>(limit, vec_d);
         CUDA_CHECK_KERNEL;
 
         // CHECK_CUDA(cudaGetLastError());
@@ -78,8 +77,8 @@ public:
         cout
             << "GPU: (min kernels time = " << min_ms << " ms)\n"
             << "max bandwidth: " << limit * sizeof(uint64_t) / min_ms * 1e-6 << " GB/s\n"
-            << "Worked with array of size: " << sizeof(vec_h) / (double)1e6 << " Mb"
-            << endl;
+            << "Worked with array of size: " << sizeof(vec_h) * limit / (double)1e6 << " Mb"
+            << endl;  
 
         // delete[] vec_h;
         CHECK_CUDA(cudaFree(vec_d));
@@ -96,12 +95,12 @@ __global__ void callKernel(int limit, uint64_t *vec)
 
 int main()
 {
-    DataGeneratorWithCuda dataGeneratorWithCuda;
     int const NBlock = 26;
     int const NThread = 1024;
 
     uint64_t const limit = 1e8;
+    uint64_t vec_h[limit];
 
-    dataGeneratorWithCuda.gen<NBlock, NThread>(limit);
+    DataGeneratorWithCuda::gen<NBlock, NThread>(limit, vec_h);
     return 0;
 }
