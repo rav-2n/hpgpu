@@ -1,0 +1,1 @@
+add_library(Aggregator Aggregator.cc Aggregator.h)

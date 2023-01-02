@@ -1,0 +1,1 @@
+add_library(DataGenerator DataGenerator.cc DataGenerator.h)

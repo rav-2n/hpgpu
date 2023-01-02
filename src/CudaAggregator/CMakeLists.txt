@@ -1,0 +1,2 @@
+add_library(CudaAggregator CudaAggregatorSimple.cu CudaAggregatorSimple.h)
+set_target_properties(CudaAggregator PROPERTIES CUDA_ARCHITECTURES "75")

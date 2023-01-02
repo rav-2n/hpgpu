@@ -1,0 +1,2 @@
+add_library(DataGeneratorWithCuda DataGeneratorWithCuda.cu DataGeneratorWithCuda.h)
+set_target_properties(DataGeneratorWithCuda PROPERTIES CUDA_ARCHITECTURES "75")
